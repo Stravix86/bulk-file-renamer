@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bulk File Renamer</title>
+  <meta name="description" content="Rename hundreds of files at once in your browser. Live preview, conflict checks and undo. Nothing is uploaded.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Cpath d='M9 10h14M9 16h10M9 22h14' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Bulk File Renamer</h1>
+    <p class="sub">Rename a whole folder in one go. Preview every change, catch clashes before they happen, undo if you change your mind. Your files never leave your computer.</p>
+  </header>
+
+  <div id="unsupported" class="banner" hidden>
+    This browser can't open folders. Use <strong>Chrome</strong> or <strong>Edge</strong> on a computer.
+  </div>
+
+  <main>
+    <section class="panel controls">
+      <button id="pick" class="primary">Choose folder</button>
+      <div id="folder" class="muted">No folder chosen</div>
+
+      <div class="presets">
+        <span class="label">Quick presets</span>
+        <button data-preset="photos">Photos by date</button>
+        <button data-preset="numbered">Folder name + number</button>
+        <button data-preset="clean">Clean up names</button>
+        <button data-preset="reset">Reset</button>
+      </div>
+
+      <label>New name pattern
+        <input id="template" value="{name}" spellcheck="false" autocomplete="off">
+      </label>
+      <div class="tokens">
+        <button data-token="{name}" title="Original name without extension">{name}</button>
+        <button data-token="{n:3}" title="Counter, padded to 3 digits">{n:3}</button>
+        <button data-token="{date}" title="Last modified date, YYYY-MM-DD">{date}</button>
+        <button data-token="{date:YYYYMMDD_hhmmss}" title="Custom date format">{date:YYYYMMDD_hhmmss}</button>
+        <button data-token="{parent}" title="Folder name">{parent}</button>
+      </div>
+
+      <div class="row">
+        <label>Find <input id="find" spellcheck="false" autocomplete="off"></label>
+        <label>Replace with <input id="replace" spellcheck="false" autocomplete="off"></label>
+      </div>
+      <div class="row checks">
+        <label class="check"><input type="checkbox" id="regex"> Regex</label>
+        <label class="check"><input type="checkbox" id="matchCase"> Match case</label>
+      </div>
+
+      <div class="row">
+        <label>Letter case
+          <select id="case">
+            <option value="keep">Keep as is</option>
+            <option value="lower">lowercase</option>
+            <option value="upper">UPPERCASE</option>
+            <option value="title">Title Case</option>
+            <option value="kebab">kebab-case</option>
+            <option value="snake">snake_case</option>
+          </select>
+        </label>
+        <label>Extension
+          <select id="extMode">
+            <option value="keep">Keep</option>
+            <option value="lower">lowercase</option>
+            <option value="upper">UPPERCASE</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="row">
+        <label>Sort by
+          <select id="sort">
+            <option value="name">Name</option>
+            <option value="date">Date modified</option>
+            <option value="size">Size</option>
+          </select>
+        </label>
+        <label>Counter starts at <input id="start" type="number" value="1" min="0"></label>
+      </div>
+
+      <label>Only these types <span class="muted">(optional, e.g. jpg, png)</span>
+        <input id="only" spellcheck="false" autocomplete="off" placeholder="all files">
+      </label>
+    </section>
+
+    <section class="panel results">
+      <div class="bar">
+        <div id="summary" class="muted">Choose a folder to see a preview.</div>
+        <div class="actions">
+          <button id="undo" disabled>Undo last rename</button>
+          <button id="apply" class="primary" disabled>Rename files</button>
+        </div>
+      </div>
+      <div id="message" role="status"></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th class="c"><input type="checkbox" id="all" checked title="Select all"></th><th>Current name</th><th>New name</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="muted">Runs entirely in your browser. <a href="https://github.com/Stravix86/bulk-file-renamer">Source on GitHub</a></footer>
+  <script src="renamer.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
