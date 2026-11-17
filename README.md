@@ -4,6 +4,8 @@ Rename hundreds of files at once, right in your browser. You see every new name 
 
 **Try it:** https://stravix86.github.io/bulk-file-renamer/ (Chrome or Edge on a computer)
 
+**Windows app:** [BulkFileRenamer-windows.exe](https://github.com/Stravix86/bulk-file-renamer/releases/latest/download/BulkFileRenamer-windows.exe) (portable, about 3 MB, nothing to install). Windows may say "Windows protected your PC" because the exe isn't code-signed: click **More info → Run anyway**.
+
 ## The problem
 
 Renaming a folder of photos, scans or downloads one file at a time is slow and error-prone. Built-in tools like Windows' "rename all" only give you `Name (1)`, `Name (2)`. Most bulk renamers are desktop apps you have to download and trust.
@@ -43,6 +45,10 @@ python -m http.server 8000
 ```
 
 Then open http://localhost:8000. Folder access needs `localhost` or HTTPS.
+
+## Building the Windows app
+
+The exe is a small [Tauri](https://tauri.app) wrapper around these same web files, using Windows' built-in WebView2. Push a version tag (for example `git tag v1.0.1` then `git push origin v1.0.1`) and GitHub Actions builds it and attaches it to a Release. To build it yourself you need Rust, Node and the Visual Studio C++ build tools: run `node native/stage-web.mjs`, then `npx @tauri-apps/cli@2 build --no-bundle` inside `native/desktop`.
 
 ## Files
 
